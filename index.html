@@ -1,0 +1,551 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Virtual Memory and Paging Simulator</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <h1>Virtual Memory and Paging Simulator</h1>
+        <p>Learn how virtual memory works through interactive demonstrations.</p>
+    </header>
+
+    <!-- NAVIGATION -->
+    <nav>
+        
+        <a href="#home">Home</a>
+        <a href="#learn">Learn</a>
+        <a href="#simulator">Simulator</a>
+        <a href="#page-table">Page Table</a>
+        <a href="#physical-ram">Physical RAM</a>
+        <a href="#quiz">Quiz</a>
+        <a href="#references">References</a>
+    </nav>
+
+    <main>
+
+        <!-- HOME SECTION -->
+        <section id="home">
+
+            <h2>Welcome to Virtual Memory</h2>
+
+            <p>
+                Explore how a computer translates virtual addresses
+                into physical addresses using paging.
+            </p>
+
+        </section>
+
+
+        <!-- LEARN SECTION -->
+        <section id="learn">
+
+            <h2>Learn Virtual Memory</h2>
+
+            <p>
+                Understand the basic concepts of Virtual Memory
+                and Paging before using the simulator.
+            </p>
+
+
+            <!-- TOPIC 1 -->
+            <div class="learn-topic">
+
+                <h3>1. What is Virtual Memory?</h3>
+
+                <p>
+                    Virtual Memory is a memory management technique
+                    that allows a computer to use secondary storage
+                    as an extension of main memory (RAM).
+                </p>
+
+                <p>
+                    It gives each process its own virtual address
+                    space. The operating system manages how virtual
+                    addresses are mapped to physical memory.
+                </p>
+
+                <p><strong>Example:</strong></p>
+
+                <p>
+                    A program uses virtual addresses without needing
+                    to know the exact physical RAM location where
+                    its data is stored.
+                </p>
+
+            </div>
+
+
+            <!-- TOPIC 2 -->
+            <div class="learn-topic">
+
+                <h3>2. What is Paging?</h3>
+
+                <p>
+                    Paging is a memory management technique in which
+                    virtual memory is divided into fixed-size blocks
+                    called Pages, while physical memory is divided
+                    into blocks called Frames.
+                </p>
+
+                <p>
+                    Pages and frames have the same size. The operating
+                    system uses a Page Table to map virtual pages
+                    to physical frames.
+                </p>
+
+                <p><strong>Example:</strong></p>
+
+                <p>
+                    If page size is 16 bytes, each virtual page
+                    contains 16 bytes and each physical frame
+                    also stores 16 bytes.
+                </p>
+
+            </div>
+
+
+            <!-- TOPIC 3 -->
+            <div class="learn-topic">
+
+                <h3>3. Pages and Frames</h3>
+
+                <p>
+                    <strong>Page:</strong> A fixed-size block of
+                    virtual memory.
+                </p>
+
+                <p>
+                    <strong>Frame:</strong> A fixed-size block of
+                    physical RAM where a page can be stored.
+                </p>
+
+                <p>
+                    A page can be loaded into any available physical
+                    frame. The Page Table keeps track of this mapping.
+                </p>
+
+                <p><strong>In this simulator:</strong></p>
+
+                <ul>
+                    <li>Page Size = 16 bytes</li>
+                    <li>Virtual Pages = 16</li>
+                    <li>Physical Frames = 8</li>
+                    <li>Total Virtual Address Range = 0 to 255</li>
+                    <li>Total Physical RAM = 128 bytes</li>
+                </ul>
+
+            </div>
+
+
+            <!-- TOPIC 4 -->
+            <div class="learn-topic">
+
+                <h3>4. What is a Page Table?</h3>
+
+                <p>
+                    A Page Table is a data structure maintained
+                    by the operating system. It stores the mapping
+                    between virtual pages and physical memory frames.
+                </p>
+
+                <p>
+                    When a program accesses a virtual address,
+                    the system checks the Page Table to find
+                    the corresponding physical frame.
+                </p>
+
+                <p><strong>Example:</strong></p>
+
+                <ul>
+                    <li>Virtual Page 0 → Frame 2</li>
+                    <li>Virtual Page 1 → Frame 4</li>
+                    <li>Virtual Page 2 → Frame 5</li>
+                </ul>
+
+                <p>
+                    If a page is not currently loaded into RAM,
+                    its Page Table entry is marked as not present.
+                </p>
+
+            </div>
+
+
+            <!-- TOPIC 5 -->
+            <div class="learn-topic">
+
+                <h3>5. Virtual Address and Physical Address</h3>
+
+                <p>
+                    <strong>Virtual Address:</strong> The address
+                    generated by the CPU for a process.
+                </p>
+
+                <p>
+                    <strong>Physical Address:</strong> The actual
+                    location in physical RAM.
+                </p>
+
+                <p>
+                    The virtual address is divided into two parts:
+                </p>
+
+                <ul>
+                    <li><strong>Virtual Page Number (VPN):</strong>
+                        Identifies the virtual page.</li>
+
+                    <li><strong>Offset:</strong>
+                        Identifies the exact byte position inside
+                        that page.</li>
+                </ul>
+
+                <p><strong>Address Translation Formulas:</strong></p>
+
+                <div class="formula-box">
+
+                    <p>
+                        VPN = Floor (Virtual Address / Page Size)
+                    </p>
+
+                    <p>
+                        Offset = Virtual Address % Page Size
+                    </p>
+
+                    <p>
+                        Physical Address =
+                        (Frame Number × Page Size) + Offset
+                    </p>
+
+                </div>
+
+                <p><strong>Practical Example:</strong></p>
+
+                <p>
+                    Suppose the Virtual Address is 37 and Page Size
+                    is 16 bytes.
+                </p>
+
+                <ul>
+                    <li>VPN = Floor (37 / 16) = 2</li>
+                    <li>Offset = 37 % 16 = 5</li>
+                    <li>Page 2 is stored in Frame 5.</li>
+                    <li>Physical Address = (5 × 16) + 5 = 85</li>
+                </ul>
+
+                <p>
+                    Therefore, Virtual Address 37 is translated
+                    into Physical Address 85.
+                </p>
+
+            </div>
+
+
+            <!-- TOPIC 6 -->
+            <div class="learn-topic">
+
+                <h3>6. What is a Page Fault?</h3>
+
+                <p>
+                    A Page Fault occurs when a program tries to
+                    access a virtual page that is not currently
+                    present in physical RAM.
+                </p>
+
+                <p>
+                    The operating system handles the page fault
+                    and arranges for the required page to be loaded
+                    into physical memory.
+                </p>
+
+                <p><strong>Example from this simulator:</strong></p>
+
+                <ul>
+                    <li>Virtual Address = 55</li>
+                    <li>VPN = Floor (55 / 16) = 3</li>
+                    <li>Offset = 55 % 16 = 7</li>
+                    <li>Virtual Page 3 is initially not present in RAM.</li>
+                </ul>
+
+                <p>
+                    Therefore, a Page Fault is detected.
+                    After loading Page 3 into Frame 2:
+                </p>
+
+                <p>
+                    Physical Address = (2 × 16) + 7 = 39
+                </p>
+
+            </div>
+
+
+            <!-- TOPIC 7 -->
+            <div class="learn-topic">
+
+                <h3>7. FIFO Page Replacement Algorithm</h3>
+
+                <p>
+                    FIFO stands for First In, First Out.
+                    It is a page replacement algorithm used
+                    when physical memory has no free frame
+                    for a required page.
+                </p>
+
+                <p>
+                    FIFO replaces the page that entered memory
+                    first. It follows the order in which pages
+                    were loaded into RAM.
+                </p>
+
+                <p><strong>Example:</strong></p>
+
+                <p>
+                    Suppose all physical frames are occupied
+                    and a new page needs to be loaded.
+                    FIFO selects the oldest loaded page
+                    for replacement.
+                </p>
+
+                <p>
+                    In this simulator, FIFO is used to select
+                    a page for replacement when RAM is full.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- SIMULATOR SECTION -->
+        <section id="simulator">
+
+            <h2>Address Translation Simulator</h2>
+
+            <p>
+                Enter a virtual address between 0 and 255
+                to see how it is translated into a physical address.
+            </p>
+
+            <div class="simulator-box">
+
+                <label for="virtualAddress">
+                    Enter Virtual Address:
+                </label>
+
+                <input
+                    type="number"
+                    id="virtualAddress"
+                    min="0"
+                    max="255"
+                    value="37"
+                    placeholder="Enter address (0-255)"
+                >
+
+                <button id="translateBtn">
+                    Translate Address
+                </button>
+<button id="resetSimulatorBtn">
+    Reset Simulator
+</button>
+                <div id="translationResult">
+                    <p>Translation result will appear here.</p>
+                </div>
+
+            </div>
+
+            <div id="stepByStepResult" class="steps-box">
+
+                <h3>Step-by-Step Translation</h3>
+
+                <p>
+                    Translate an address to see the detailed
+                    translation process here.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- PAGE TABLE SECTION -->
+        <section id="page-table">
+
+            <h2>Page Table Visualization</h2>
+
+            <p>
+                This table shows the mapping between virtual pages
+                and physical memory frames.
+            </p>
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Virtual Page</th>
+                            <th>Physical Frame</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="pageTableBody">
+                        <!-- JavaScript will generate rows here -->
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- PHYSICAL RAM SECTION -->
+        <section id="physical-ram">
+
+            <h2>Physical Memory (RAM) Visualization</h2>
+
+            <p>
+                Physical RAM contains 8 frames.
+                Each frame can store one virtual page.
+            </p>
+
+            <div id="ramContainer" class="ram-grid">
+                <!-- JavaScript will generate RAM frames here -->
+            </div>
+
+        </section>
+
+
+        <!-- QUIZ SECTION -->
+        <section id="quiz">
+
+            <h2>Check Your Understanding</h2>
+
+            <p>
+                Test your knowledge of Virtual Memory and Paging.
+            </p>
+
+            <div class="quiz-box">
+
+                <h3 id="questionText">
+                    Question will appear here.
+                </h3>
+
+                <div id="answerOptions"></div>
+
+                <button id="nextQuestionBtn">
+                    Next Question
+                </button>
+
+                <div id="quizFeedback"></div>
+
+                <h3 id="quizScore"></h3>
+
+            </div>
+
+        </section>
+
+<!-- REFERENCES SECTION -->
+<section id="references">
+
+    <h2>References</h2>
+
+    <p>
+        The following academic resources were used
+        to understand the concepts of Virtual Memory,
+        Paging, Page Tables and Page Replacement.
+    </p>
+
+    <div class="learn-topic">
+
+        <h3>1. Operating System Concepts</h3>
+
+        <p>
+            Authors: Abraham Silberschatz, Peter B. Galvin,
+            and Greg Gagne.
+        </p>
+
+        <p>
+            Topic: Virtual Memory, Paging and Page Replacement.
+        </p>
+
+        <a href="https://www.os-book.com/"
+           target="_blank"
+           rel="noopener noreferrer">
+            Visit Official Book Website
+        </a>
+
+    </div>
+
+    <div class="learn-topic">
+
+        <h3>2. Operating Systems: Three Easy Pieces</h3>
+
+        <p>
+            Authors: Remzi H. Arpaci-Dusseau and
+            Andrea C. Arpaci-Dusseau.
+        </p>
+
+        <p>
+            Topic: Memory Virtualization and Paging.
+        </p>
+
+        <a href="https://pages.cs.wisc.edu/~remzi/OSTEP/"
+           target="_blank"
+           rel="noopener noreferrer">
+            Read Online Book
+        </a>
+
+    </div>
+
+    <div class="learn-topic">
+
+        <h3>3. Computer Organization and Architecture</h3>
+
+        <p>
+            Author: William Stallings.
+        </p>
+
+        <p>
+            Topic: Computer Memory Organization
+            and Memory Management.
+        </p>
+
+        <a href="https://www.pearson.com/"
+           target="_blank"
+           rel="noopener noreferrer">
+            Pearson Official Website
+        </a>
+
+    </div>
+
+</section>
+
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <p>
+            Virtual Memory and Paging Simulator | Majid & Team
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
